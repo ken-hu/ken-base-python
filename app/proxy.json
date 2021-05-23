@@ -1,0 +1,22 @@
+[
+  { "name":"xxxxxx",
+    "ssh_ip":"xxxxxxx",
+    "ssh_port":56000,
+    "ssh_username":"xxxxxx",
+    "ssh_pkey":"xxxx",
+    "remote_bind_addr":"192.168.xx.x",
+    "remote_bind_port":3006,
+    "local_port":33006,
+    "status":"ENABLE"
+  },
+  { "name":"xxx",
+    "ssh_ip":"x.x.x.x",
+    "ssh_port":22,
+    "ssh_username":"root",
+    "ssh_pkey":"xxxxxxx",
+    "remote_bind_addr":"192.168.x.x",
+    "remote_bind_port":5432,
+    "local_port":54320,
+    "status":"ENABLE"
+  }
+]
