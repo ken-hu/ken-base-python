@@ -283,77 +283,87 @@ def getcityid():
     return cityidlist[rd]
 
 
+def get_center_location():
+    rd = random.randint(0, len(center_location_list))
+    return center_location_list[rd]
+
+
 class WebsiteUser(HttpUser):
     wait_time = between(5, 15)
 
+    # poi v1
     @task
     def screen_v1(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
 
-        params = json.dumps({
-            "city": str(getcity()),
+        self.client.post("/poi/advanced/screen/v1", json={
+            # "city": str(getcity()),
             "adcode": str(getadcode())
             # "level1": "",
             # "level2": "",
             # "level3": ""
-        })
-        self.client.post("/poi/advanced/screen/v1", None, params)
+        }, headers=header)
 
+    # poi v2
     @task
     def screen_v2(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
 
-        params = json.dumps({
-            "city": str(getcity()),
+        self.client.post("/poi/advanced/screen/v2", json={
+            # "city": str(getcity()),
             "adcode": str(getadcode()),
             # "level1": "level1",
             # "level2": "level2",
             # "level3": "level3"
-        })
-        self.client.post("/poi/advanced/screen/v2", params, header)
+        }, headers=header)
 
+    # grid v1
     @task
     def merge_v1(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
 
-        params = json.dumps({
+        self.client.post("/grid/fetch/all/merge/v1", json={
             "city": str(getcity()),
-            # "source": "",
-            # "intervalStar": "",
-            # "intervalEnd": "",
-        })
-        self.client.post("/fetch/all/merge/v1", params, header)
+            "source": "resident",
+            "intervalStar": "2000",
+            "intervalEnd": "200000",
+        }, headers=header)
 
+    # grid v2
     @task
     def merge_v2(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
 
-        params = json.dumps({
+        self.client.post("/grid/fetch/all/merge/v2", json={
             "city": str(getcity()),
-            # "source": "",
-            # "intervalStar": "",
-            # "intervalEnd": "",
-        })
-        self.client.post("/fetch/all/merge/v2", params, header)
+            "source": "resident",
+            "intervalStar": "2000",
+            "intervalEnd": "200000",
+        }, headers=header)
 
+    #
     @task
     def range_v1(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
 
-        params = json.dumps({
+        self.client.post("/around/range/v1", json={
             "longitude": "117.22168",
             "latitude": "34.22938",
             "radius": "5000"
-        })
-        self.client.post("/around/range/v1", params, header)
+        }, headers=header)
 
     @task
-    def range_v1(self):
+    def range_v2(self):
         header = {"Content-Type": "application/json; charset=UTF-8", 'Connection': 'close'}
+        location_str = get_center_location()
+        location_array = location_str.split(",")
+        lat = location_array[0]
+        log = location_array[1]
 
-        params = json.dumps({
-            "longitude": "117.22168",
-            "latitude": "34.22938",
+        self.client.post("/around/range/v2", json={
+            # "longitude": "117.22168",
+            # "latitude": "34.22938",
+            "longitude": log,
+            "latitude": lat,
             "radius": "5000"
-        })
-        self.client.post("/around/range/v2", params, header)
+        }, headers=header)
